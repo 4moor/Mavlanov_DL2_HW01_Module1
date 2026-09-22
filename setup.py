@@ -1,3 +1,3 @@
-from setuptools import setup
+from setuptools import find_packages, setup
 
-setup(py_modules=[])
+setup(packages=find_packages(include=["minitorch", "minitorch.*"]))

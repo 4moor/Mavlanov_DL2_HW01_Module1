@@ -57,10 +57,10 @@ def animate(self, models, names):
             args=[
                 {"visible": [False] * len(background) + [True]},
                 {},
-            ],  # layout attribute
+            ],
             label="%1.3f" % names[i],
         )
-        step["args"][0]["visible"][i] = True  # Toggle i'th trace to "visible"
+        step["args"][0]["visible"][i] = True
         steps.append(step)
 
     sliders = [
@@ -75,14 +75,14 @@ def animate(self, models, names):
     fig.update_layout(
         template="simple_white",
         xaxis={
-            "showgrid": False,  # thin lines in the background
-            "zeroline": False,  # thick line at x=0
-            "visible": False,  # numbers below
+            "showgrid": False,
+            "zeroline": False,
+            "visible": False,
         },
         yaxis={
-            "showgrid": False,  # thin lines in the background
-            "zeroline": False,  # thick line at x=0
-            "visible": False,  # numbers below
+            "showgrid": False,
+            "zeroline": False,
+            "visible": False,
         },
     )
     fig.show()
@@ -96,7 +96,6 @@ def make_oned(graph, model=None, size=50):
     symbols = [symbol_map[y] for y in graph.y]
 
     if model is not None:
-        # colorscale = [[0, "#69bac9"], [1.0, "#ea8484"]]
         y = model([[j / (size + 1.0), 0.0] for j in range(size + 1)])
 
         x = [j / (size + 1.0) for j in range(size + 1)]
@@ -131,13 +130,13 @@ def plot_out(graph, model=None, name="", size=50, oned=False):
     fig = go.Figure(scatters)
     fig.update_layout(
         xaxis={
-            "showgrid": False,  # thin lines in the background
-            "visible": False,  # numbers below
+            "showgrid": False,
+            "visible": False,
             "range": [0, 1],
         },
         yaxis={
-            "showgrid": False,  # thin lines in the background
-            "visible": False,  # numbers below
+            "showgrid": False,
+            "visible": False,
             "range": [0, 1],
         },
     )

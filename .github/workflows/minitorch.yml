@@ -1,0 +1,27 @@
+name: Mavlanov MiniTorch Modules 0 and 1
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install dependencies
+        run: |
+          python -m pip install -r requirements.txt
+          python -m pip install --no-deps -e .
+          python -m pip check
+          python -I -c "import minitorch"
+      - name: Run all module 0 and 1 tests
+        run: python -m pytest -v

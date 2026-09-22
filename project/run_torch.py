@@ -11,7 +11,6 @@ class Network(torch.nn.Module):
     def __init__(self, hidden_layers):
         super().__init__()
 
-        # Submodules
         self.layer1 = Linear(2, hidden_layers)
         self.layer2 = Linear(hidden_layers, hidden_layers)
         self.layer3 = Linear(hidden_layers, 1)
@@ -57,13 +56,11 @@ class TorchTrain:
         losses = []
         for epoch in range(1, max_epochs + 1):
 
-            # Forward
             out = model.forward(torch.tensor(data.X, requires_grad=True)).view(data.N)
             y = torch.tensor(data.y)
             probs = (out * y) + (out - 1.0) * (y - 1.0)
             loss = -probs.log().sum()
 
-            # Update
             loss.view(1).backward()
 
             for p in model.parameters():
@@ -71,7 +68,6 @@ class TorchTrain:
                     p.data = p.data - learning_rate * (p.grad / float(data.N))
                     p.grad.zero_()
 
-            # Logging
             pred = out > 0.5
             correct = ((y == 1) * (pred)).sum() + ((y == 0) * (~pred)).sum()
             loss_num = loss.reshape(-1).item()

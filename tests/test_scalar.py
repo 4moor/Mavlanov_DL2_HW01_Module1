@@ -27,9 +27,6 @@ def scalars(
 small_scalars = scalars(min_value=-100, max_value=100)
 
 
-# ## Task 1.1 - Test central difference
-
-
 @pytest.mark.task1_1
 def test_central_diff() -> None:
     d = central_difference(operators.id, 5, arg=0)
@@ -48,24 +45,16 @@ def test_central_diff() -> None:
     assert_close(d, operators.exp(2.0))
 
 
-# ## Task 1.2 - Test each of the different function types
-
-
 @given(small_floats, small_floats)
 def test_simple(a: float, b: float) -> None:
-    # Simple add
     c = Scalar(a) + Scalar(b)
     assert_close(c.data, a + b)
 
-    # Simple mul
     c = Scalar(a) * Scalar(b)
     assert_close(c.data, a * b)
 
-    # Simple relu
     c = Scalar(a).relu() + Scalar(b).relu()
     assert_close(c.data, minitorch.operators.relu(a) + minitorch.operators.relu(b))
-
-    # Add others if you would like...
 
 
 one_arg, two_arg, _ = MathTestVariable._comp_testing()
@@ -91,11 +80,6 @@ def test_two_args(
 ) -> None:
     name, base_fn, scalar_fn = fn
     assert_close(scalar_fn(t1, t2).data, base_fn(t1.data, t2.data))
-
-
-# ## Task 1.4 - Computes checks on each of the derivatives.
-
-# See minitorch.testing for all of the functions checked.
 
 
 @given(small_scalars)

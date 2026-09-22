@@ -1,17 +1,65 @@
-# MiniTorch Module 1
+# Mavlanov — MiniTorch Module 1
 
-<img src="https://minitorch.github.io/minitorch.svg" width="50%">
+Скалярное автоматическое дифференцирование. Основа — шаблон
+[minitorch/Module-1](https://github.com/minitorch/Module-1).
+Нужные реализации и тесты перенесены из
+[моего модуля 0](https://github.com/4moor/Mavlanov_DL2_HW01_Module0).
 
-* Docs: https://minitorch.github.io/
+Выполнены задания 1.1–1.5: численная производная, операции над скалярами,
+цепное правило, обратное распространение градиента и обучение сети.
+Визуализации пропущены по разрешению преподавателя, логи обучения сохранены.
 
-* Overview: https://minitorch.github.io/module1/module1/
+## Запуск
 
-This assignment requires the following files from the previous assignments. You can get these by running
+Python 3.11, numpy 1.26.4 и numba 0.58.1, как в уточнении преподавателя.
 
 ```bash
-python sync_previous_module.py previous-module-dir current-module-dir
+python3.11 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+python -m pip install --no-deps -e .
+python -m pip check
+python -m pytest -v
 ```
 
-The files that will be synced are:
+GitHub Actions запускает все тесты модулей 0 и 1. Проверка flake8 не включена
+по уточнению преподавателя. Один тест из шаблона модуля 0 помечен `xfail`:
+он проверяет ошибку при вызове базового модуля без `forward`.
 
-        minitorch/operators.py minitorch/module.py tests/test_module.py tests/test_operators.py project/run_manual.py
+Локальная проверка на macOS, Python 3.11.16: `117 passed, 1 xfailed`.
+Конфликтов зависимостей нет; импорт установленного пакета проверен
+в изолированном режиме интерпретатора.
+
+В шаблоне модуля 1 логарифм считается как `log(x + 1e-6)`. Этот вариант
+сохранён, а его производная согласована с формулой: `1 / (x + 1e-6)`.
+Обход графа использует стек, поэтому не зависит от глубины рекурсии.
+При нескольких путях к одной переменной градиенты складываются.
+
+## Проверка обучения
+
+Повторить все четыре запуска:
+
+```bash
+python -u -m project.run_Mavlanov_training > Mavlanov_Module1_training.txt
+```
+
+В каждом запуске: seed 0, 50 точек, два скрытых слоя по 10 нейронов,
+скорость обучения 0.5, 500 эпох. Loss — сумма потерь по обучающим точкам.
+Итоговые значения рассчитаны после последнего шага оптимизатора:
+
+- Simple: loss 94.053959 → 3.086273, правильно 48 из 50.
+- Diag: loss 123.241256 → 0.132593, правильно 50 из 50.
+- Split: loss 70.678524 → 2.348929, правильно 49 из 50.
+- Xor: loss 69.479967 → 3.989429, правильно 48 из 50.
+
+Это результаты на обучающих данных, отдельной валидации здесь нет.
+Полный вывод: [Mavlanov_Module1_training.txt](Mavlanov_Module1_training.txt).
+
+## Источники и сдача
+
+- [Условие домашнего задания](https://github.com/thecrazymage/DL2_HSE/tree/main/homeworks/homework_01).
+- [Условия модуля 1](https://minitorch.github.io/module1/module1/).
+- Пояснения преподавателя, приложенные к заданию.
+
+Для сдачи нужны ссылка на репозиторий и скриншот успешного GitHub Actions.
+Локальные проверки не заменяют Actions.

@@ -1,15 +1,8 @@
-"""
-Be sure you have the extra requirements installed.
-
->>> pip install -r requirements.extra.txt
-"""
-
 import networkx as nx
 
 import minitorch
 
 
-## Create an autodiff expression here.
 def expression():
     x = minitorch.Scalar(1.0, name="x")
     y = minitorch.Scalar(1.0, name="y")
